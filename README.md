@@ -6,9 +6,9 @@ Attachments | 73.06 | X
 Relations | X|X
 
 # Data sets 
-Stac (link)
-Stac Squished (link)
-(minecraft)  
+Stac (link).  
+Stac Squished (link).  
+(minecraft).  
 
 # Setup
 All the requirement for LineBert can be found in `requirements.txt`. For training or testing, the data sets should be put in the corresponding folder.  
