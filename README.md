@@ -11,13 +11,12 @@ Stac Squished (link)
 (minecraft)  
 
 # Setup
-- All the requirement for LineBert can be found in `requirements.txt`.
-- Add the data sets in the corresponding folder.
-- For training the following commands
+All the requirement for LineBert can be found in `requirements.txt`. For training or testing, the data sets should be put in the corresponding folder.  
+For training, run the following commands:
 ```
 python bert_finetune.py
 python linear.py
 python multitask.py
 ```
-- For evaluation add the trained models (link) to the `models` folder.
-add the models in link to the corresponding model folder. run the notebook linear_test.py before running multitask_test.py to get f1 score on relation prediction.
+- For evaluation add the trained models (link) to the `models` folder, or use the .pth obtained after training, and run the the notebooks `bert_finetune_test.ipynb` and `multitask_test.ipynb`.
+
