@@ -2,7 +2,7 @@ map_relations = {'Comment': 0, 'Contrast': 1, 'Correction': 2, 'Question-answer_
             'Elaboration': 6, 'Clarification_question': 7, 'Conditional': 8, 'Continuation': 9, 'Result': 10, 'Explanation': 11,
             'Q-Elab': 12, 'Alternation': 13, 'Narration': 14, 'Background': 15, 'Break': 16, 'Sequence' : 17}
 
-use_cuda = False
+use_cuda = True
 if use_cuda :
     device = 'cuda'
 else : device = 'cpu'

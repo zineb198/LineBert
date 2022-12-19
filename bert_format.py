@@ -9,10 +9,10 @@ def multi_delete(list_, indexes):
         del list_[index]
     return list_
 
-def tokenize(input, tokenizer, token = False): 
+def tokenize(input_, tokenizer, token = False): 
 
     device = torch.device(params.device)
-    batch_tokenized = tokenizer(input, return_tensors="pt", padding=True, add_special_tokens=True) # get tokens id for each token (word) in the dialog
+    batch_tokenized = tokenizer(input_, return_tensors="pt", padding=True, add_special_tokens=True) # get tokens id for each token (word) in the dialog
     input_ids = batch_tokenized["input_ids"].to(device) # list of token ids of dialogs in batch 
     attention_masks = batch_tokenized["attention_mask"].to(device) # cuda
     token_type_ids = batch_tokenized["token_type_ids"].to(device)

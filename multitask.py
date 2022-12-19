@@ -4,7 +4,7 @@ from utils import load_data
 import torch, random, time
 import numpy as np
 import params
-from bert_format import input_format, position_ids_compute, undersample, format_time, flat_accuracy ## change to format_input !
+from bert_format import input_format, position_ids_compute, undersample, format_time, flat_accuracy 
 from torch.utils.data import TensorDataset, random_split, DataLoader, RandomSampler, SequentialSampler
 from transformers import AdamW, BertForSequenceClassification, BertTokenizer
 from torch import nn
@@ -22,7 +22,7 @@ data = load_data(params.data_path + "train_data.json", map_relations=params.map_
 if params.data_path == "data/stac_data/"  :
     data[343]['relations'].remove({'type': 14, 'x': 18, 'y': 78})
 
-if params.data_path == "data/stac_situ_squished_data/" :
+if params.data_path == "data/stac_squished_data/" :
 
     data[177]['relations'].remove({'type': 17, 'x': 5, 'y': 41})
 
@@ -35,8 +35,9 @@ if params.data_path == "data/stac_situ_squished_data/" :
     data[474]['relations'].remove({'type': 11, 'x': 14, 'y': 59})
     data[474]['relations'].remove({'type': 2, 'x': 18, 'y': 59})
     
+#     data[560]['relations'].remove({'type': 9, 'x': 18, 'y': 43})
+    data[562]['relations'].remove({'type': 4, 'x': 34, 'y': 66})
     data[578]['relations'].remove({'type': 17, 'x': 44, 'y': 83})
-    
     data[581]['relations'].remove({'type': 17, 'x': 19, 'y': 63})
         
     data[884]['relations'].remove({'type': 14, 'x': 23, 'y': 83})
@@ -89,13 +90,7 @@ optimizer = AdamW(model.parameters(),
                   eps = params.eps_bert 
                 )
 
-seed_val = params.seed
-
-random.seed(seed_val)
-np.random.seed(seed_val)
-torch.manual_seed(seed_val)
-if params.device == 'cuda' :
-    torch.cuda.manual_seed_all(seed_val)
+training_stats = []
 
 total_t0 = time.time()
 
@@ -110,7 +105,10 @@ for epoch_i in range(params.epoch_multitask):
     model.train()
 
     for step, batch in enumerate(train_dataloader):
-        if step != 1623 and step != 1624 and step != 2046 and step != 908:
+#         if step == 2 or step == 1623 or step == 1624 or step == 2046 or step == 908:
+#             print(batch)
+#         if step != 1623 and step != 1624 and step != 2046 and step != 908:
+       if True :
             if step % 500 == 0 and not step == 0:
                 elapsed = format_time(time.time() - t0)
                 print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train_dataloader), elapsed))
@@ -136,5 +134,5 @@ for epoch_i in range(params.epoch_multitask):
 
 torch.save({
     'model_state_dict': model.state_dict(),
-}, params.model_path +'multitask/' + 'bert_multitask.pth')
+}, params.model_path + 'bert_multitask.pth')
 

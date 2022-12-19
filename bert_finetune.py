@@ -50,9 +50,7 @@ optimizer = AdamW(model.parameters(),
 
 total_steps = len(train_dataloader) * params.epochs_bert
 
-random.seed(params.seed)
-if params.device == 'cuda' :
-    torch.cuda.manual_seed_all(params.seed)
+seed_val = params.seed
 
 total_t0 = time.time()
 
@@ -120,7 +118,8 @@ for epoch_i in range(params.epochs_bert):
         if params.device == 'cuda' : 
             logits = logits.detach().cpu().numpy()
             label_ids = batch[4].to(device).to('cpu').numpy()
-
+        else : label_ids = batch[4].to(device)
+            
         # Compute the accuracy
         total_eval_accuracy += flat_accuracy(logits, label_ids)
         

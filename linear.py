@@ -45,9 +45,6 @@ for i in range(len(labels_valid)):
 batches_train = get_batches(len(input_ids_train), params.batch_size_linear)
 batches_valid = get_batches(len(input_ids_valid), params.batch_size_linear)
 
-random.seed(params.seed)
-if params.device == 'cuda' :
-    torch.cuda.manual_seed_all(params.seed)
 
 linear = NeuralNetwork().to(device)
 linear.train()
@@ -114,7 +111,8 @@ for epoch in range(params.epochs_linear) :
 
 output_model = params.model_path + params.linear_name + '.pth' 
 
-
+print('finished_training, saving to : ', output_model)
+        
 torch.save({
     'model_state_dict': linear.state_dict(),
 }, output_model)
