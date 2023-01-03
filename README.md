@@ -1,6 +1,6 @@
 # LineBert
 This repository contains the code associated to the LineBert paper. It indroduces a simple method for discourse parsing in dialogue.
- | Attachments| Relations|
+ - | Attachments| Relations|
 --- | --- | --- 
 STAC | 73.06 | 56.25
 STAC-squished | 79.93|71.22
