@@ -6,7 +6,7 @@ STAC | 73.06 | 56.25
 STAC-squished | 79.93|71.22
 
 # Data sets 
-The two data sets, stac and stac_squished can be found [here] (https://drive.google.com/drive/folders/1tFBhq3rRbQGcq5J6Lga8-YPSaNb_pfmd?usp=sharing)
+The two data sets, stac and stac_squished can be found [here](https://drive.google.com/drive/folders/1tFBhq3rRbQGcq5J6Lga8-YPSaNb_pfmd?usp=sharing)
 
 # Setup
 All the requirement for LineBert can be found in `requirements.txt`. For training or testing, the data sets should be put in the corresponding folder.  
