@@ -70,7 +70,7 @@ def input_format(data, relations = False, attach_preds = None, token = False):
     labels_complete = torch.tensor(labels_complete)
     return input_ids, attention_masks, token_type_ids, tokens, labels, labels_complete, raw
 
-def position_ids_compute(input_ids, raw, labels):  # not finished
+def position_ids_compute(input_ids, raw, labels): 
     ''' Compute position_ids vector for bert component'''
     # get tokens id for each token (word) in the dialog
     tokenizer = BertTokenizer.from_pretrained(params.model_name, use_fast=True)
