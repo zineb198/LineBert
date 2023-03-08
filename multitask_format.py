@@ -20,7 +20,7 @@ class SequenceClassificationHead(nn.Module):
         self._init_weights()
 
     def forward(self, sequence_output, pooled_output, labels=None, **kwargs):
-        pooled_output = self.dropout(pooled_output)
+        pooled_output_ = self.dropout(pooled_output)
         logits = self.classifier(pooled_output)
 
         loss = None
@@ -33,7 +33,8 @@ class SequenceClassificationHead(nn.Module):
                 logits.view(-1, self.num_labels), labels.long().view(-1)
             )
 
-        return logits, loss, pooled_output
+        return logits, loss, pooled_output_
+
 
     def _init_weights(self):
         self.classifier.weight.data.normal_(mean=0.0, std=0.02)
