@@ -35,7 +35,6 @@ class SequenceClassificationHead(nn.Module):
 
         return logits, loss, pooled_output_
 
-
     def _init_weights(self):
         self.classifier.weight.data.normal_(mean=0.0, std=0.02)
         if self.classifier.bias is not None:
@@ -51,7 +50,6 @@ class MultiTaskModel(nn.Module):
         self.output_heads = nn.ModuleDict()
         for task in tasks:
             decoder = self._create_output_head(self.encoder.config.hidden_size, task)
-            # ModuleDict requires keys to be strings
             self.output_heads[str(task.id)] = decoder
 
     @staticmethod
@@ -102,7 +100,7 @@ class MultiTaskModel(nn.Module):
             if labels is not None:
                 loss_list.append(task_loss)
 
-        # logits are only used for eval. and in case of eval the batch is not multi task ! important
+        # logits are only used for eval. and in case of eval the batch is not multi task 
         # For training only the loss is used
         outputs = (logits, outputs[2:])
 

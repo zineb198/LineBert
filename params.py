@@ -23,7 +23,7 @@ elif data_set == 'stac_squished' :
     model_path = 'models/stac_squished/'
 
 seed = 18
-valid_size = 1 # 90
+valid_size = 90 # 90
 
 bert_name = 'bert_finetuned'
 linear_name =  'linear'

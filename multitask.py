@@ -1,21 +1,17 @@
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 from utils import load_data
 import torch, random, time
 import numpy as np
-import params
+import params_ as params
 from bert_format import input_format, position_ids_compute, undersample, format_time, flat_accuracy 
 from torch.utils.data import TensorDataset, random_split, DataLoader, RandomSampler, SequentialSampler
 from transformers import AdamW, BertForSequenceClassification, BertTokenizer
 from torch import nn
 from multitask_format import Task, MultiTaskModel
 
-
 device = torch.device(params.device)
 
-num_labels = 17 
-if params.data_path == "data/stac_squished_data/" :
-    num_labels = 18
+num_labels = 18
 
 data = load_data(params.data_path + "train_data.json", map_relations=params.map_relations)
 
@@ -42,7 +38,7 @@ if params.data_path == "data/stac_squished_data/" :
         
     data[884]['relations'].remove({'type': 14, 'x': 23, 'y': 83})
 
-train_data = data
+train_data = data[params.valid_size:]
 valid_data = data[:params.valid_size]
 
 # attachment prediction data 
@@ -92,6 +88,14 @@ optimizer = AdamW(model.parameters(),
 
 training_stats = []
 
+seed_val = params.seed
+
+random.seed(seed_val)
+np.random.seed(seed_val)
+torch.manual_seed(seed_val)
+if params.device == 'cuda' :
+    torch.cuda.manual_seed_all(seed_val)
+
 total_t0 = time.time()
 
 for epoch_i in range(params.epoch_multitask):
@@ -105,32 +109,28 @@ for epoch_i in range(params.epoch_multitask):
     model.train()
 
     for step, batch in enumerate(train_dataloader):
-#         if step == 2 or step == 1623 or step == 1624 or step == 2046 or step == 908:
-#             print(batch)
-#         if step != 1623 and step != 1624 and step != 2046 and step != 908:
-       if True :
-            if step % 500 == 0 and not step == 0:
-                elapsed = format_time(time.time() - t0)
-                print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train_dataloader), elapsed))
+        if step % 500 == 0 and not step == 0:
+            elapsed = format_time(time.time() - t0)
+            print('  Batch {:>5,}  of  {:>5,}.    Elapsed: {:}.'.format(step, len(train_dataloader), elapsed))
             
-            model.zero_grad()
-            outputs, embed = model(input_ids=batch[0].to(device),
-                    attention_mask=batch[1].to(device),
-                    token_type_ids=batch[2].to(device),
-                    position_ids=batch[3].to(device),
-                    labels=batch[4].to(device),
-                    task_ids=batch[5].to(device)
+        model.zero_grad()
+        outputs, embed = model(input_ids=batch[0].to(device),
+                attention_mask=batch[1].to(device),
+                token_type_ids=batch[2].to(device),
+                position_ids=batch[3].to(device),
+                labels=batch[4].to(device),
+                task_ids=batch[5].to(device)
                         )
-            loss = outputs[0]
+        loss = outputs[0]
 
-            total_train_loss += loss.item()
-            loss.backward()
+        total_train_loss += loss.item()
+        loss.backward()
 
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-            optimizer.step()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        optimizer.step()
 
-            avg_train_loss = total_train_loss / len(train_dataloader)       
-            training_time = format_time(time.time() - t0)
+        avg_train_loss = total_train_loss / len(train_dataloader)       
+        training_time = format_time(time.time() - t0)
 
 torch.save({
     'model_state_dict': model.state_dict(),

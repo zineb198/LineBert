@@ -14,7 +14,7 @@ def tokenize(input_, tokenizer, token = False):
     device = torch.device(params.device)
     batch_tokenized = tokenizer(input_, return_tensors="pt", padding=True, add_special_tokens=True) # get tokens id for each token (word) in the dialog
     input_ids = batch_tokenized["input_ids"].to(device) # list of token ids of dialogs in batch 
-    attention_masks = batch_tokenized["attention_mask"].to(device) # cuda
+    attention_masks = batch_tokenized["attention_mask"].to(device)
     token_type_ids = batch_tokenized["token_type_ids"].to(device)
     tokens = []
 
@@ -70,9 +70,8 @@ def input_format(data, relations = False, attach_preds = None, token = False):
     labels_complete = torch.tensor(labels_complete)
     return input_ids, attention_masks, token_type_ids, tokens, labels, labels_complete, raw
 
-def position_ids_compute(input_ids, raw, labels): 
+def position_ids_compute(input_ids, raw, labels):  # not finished
     ''' Compute position_ids vector for bert component'''
-    # get tokens id for each token (word) in the dialog
     tokenizer = BertTokenizer.from_pretrained(params.model_name, use_fast=True)
     ids = [tokenizer(raw[i], return_tensors="pt", padding=True, add_special_tokens=True)['input_ids'] for i in range(len(raw))]
     # compute position matrix
