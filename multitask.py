@@ -2,7 +2,7 @@ import os
 from utils import load_data
 import torch, random, time
 import numpy as np
-import params_ as params
+import params
 from bert_format import input_format, position_ids_compute, undersample, format_time, flat_accuracy 
 from torch.utils.data import TensorDataset, random_split, DataLoader, RandomSampler, SequentialSampler
 from transformers import AdamW, BertForSequenceClassification, BertTokenizer
